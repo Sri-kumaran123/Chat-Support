@@ -18,8 +18,12 @@ def create_app() -> Flask:
     db.init_app(app)
     bcrypt.init_app(app)
     CORS(app)
-    from routes import test_bp
+    from routes import test_bp, auth_bp
 
     app.register_blueprint(test_bp, url_prefix="/v1")
+    app.register_blueprint(auth_bp, url_prefix="/auth/v1")
 
+    with app.app_context():
+        db.create_all()
+        
     return app
